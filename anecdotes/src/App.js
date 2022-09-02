@@ -16,18 +16,29 @@ const App = () => {
   const [selected, setSelected] = useState(0)
 
   const nextAnecdote = () => setSelected(Math.floor(Math.random() * anecdotes.length))
+
   const castVote = () => {
     const newAnecdotes = [ ...anecdotes ]
     newAnecdotes[selected].votes++
     setAnecdotes(newAnecdotes)
   }
 
+  const mostVoted = () =>
+    anecdotes.reduce((prevIndex, curAnecdote, curIndex) =>
+      curAnecdote.votes > anecdotes[prevIndex].votes ? curIndex : prevIndex
+    , 0)
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected].anecdote}</p>
       <p>has {anecdotes[selected].votes} votes</p>
       <Button text='vote' onClick={castVote} />
       <Button text='next anecdote' onClick={nextAnecdote} />
+
+      <h1>Anecdote with the most votes</h1>
+      <p>{anecdotes[mostVoted()].anecdote}</p>
+      <p>has {anecdotes[mostVoted()].votes} votes</p>
     </div>
   )
 }
